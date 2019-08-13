@@ -27,8 +27,14 @@ radius_kernel(const scalar_t *__restrict__ x, const scalar_t *__restrict__ y,
 
       scalar_t dist = 0;
       for (ptrdiff_t d = 0; d < dim; d++) {
-        dist += (x[n_x * dim + d] - y[n_y * dim + d]) *
-                (x[n_x * dim + d] - y[n_y * dim + d]);
+        scalar_t temprel = x[n_x * dim + d] - y[n_y * dim + d];
+        if (temprel < -0.5*sqrt(1000/1.2)){
+          temprel += sqrt(1000/1.2);
+        }  else if (temprel > 0.5*sqrt(1000/1.2)){
+          temprel -= sqrt(1000/1.2);
+        }        
+        dist += (temprel) *
+                (temprel);
       }
       dist = sqrt(dist);
 
