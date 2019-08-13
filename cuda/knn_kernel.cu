@@ -56,6 +56,7 @@ knn_kernel(const scalar_t *__restrict__ x, const scalar_t *__restrict__ y,
       } else {
         for (ptrdiff_t d = 0; d < dim; d++) {
           scalar_t temprel = x[n_x * dim + d] - y[n_y * dim + d];
+          std::cout << temprel << std::endl;
           if (temprel < -0.5*sqrt(1000/1.2)){
             temprel += sqrt(1000/1.2);
           }  else if (temprel > 0.5*sqrt(1000/1.2)){
