@@ -55,8 +55,13 @@ knn_kernel(const scalar_t *__restrict__ x, const scalar_t *__restrict__ y,
             Cosine<scalar_t>::dot(x, y, dim);
       } else {
         for (ptrdiff_t d = 0; d < dim; d++) {
-          tmp_dist += (x[n_x * dim + d] - y[n_y * dim + d]) *
-                      (x[n_x * dim + d] - y[n_y * dim + d]);
+          scalar_t temprel = x[n_x * dim + d] - y[n_y * dim + d];
+          if (temprel < -0.5*sqrt(1000/1.2)){
+            temprel += sqrt(1000/1.2);
+          }  else if (temprel > 0.5*sqrt(1000/1.2)){
+            temprel -= sqrt(1000/1.2);
+          }
+          tmp_dist += temprel*temprel;
         }
       }
 
