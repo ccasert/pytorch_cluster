@@ -30,14 +30,14 @@ if CUDA_HOME is not None:
     ]
 
 __version__ = '1.4.4'
-url = 'https://github.com/rusty1s/pytorch_cluster'
+url = 'https://github.com/ccasert/pytorch_cluster'
 
 install_requires = ['scipy']
 setup_requires = ['pytest-runner']
 tests_require = ['pytest', 'pytest-cov']
 
 setup(
-    name='torch_cluster',
+    name='torch_cluster_cyclic',
     version=__version__,
     description=('PyTorch Extension Library of Optimized Graph Cluster '
                  'Algorithms'),
