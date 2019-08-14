@@ -37,7 +37,7 @@ setup_requires = ['pytest-runner']
 tests_require = ['pytest', 'pytest-cov']
 
 setup(
-    name='torch_cluster_cyclic',
+    name='torch_cluster',
     version=__version__,
     description=('PyTorch Extension Library of Optimized Graph Cluster '
                  'Algorithms'),
