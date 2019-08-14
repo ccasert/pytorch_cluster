@@ -57,7 +57,7 @@ def knn_cyclic(x, y, k, batch_x=None, batch_y=None, cosine=False):
     assert y.size(0) == batch_y.size(0)
 
     if x.is_cuda:
-        return torch_cluster.knn_cyclic_cuda.knn(x, y, k, batch_x, batch_y, cosine)
+        return torch_cluster.knn_cyclic_cuda.knn_cyclic(x, y, k, batch_x, batch_y, cosine)
 
     if cosine:
         raise NotImplementedError('Cosine distance not implemented for CPU')
