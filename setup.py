@@ -23,6 +23,8 @@ if CUDA_HOME is not None:
                       ['cuda/nearest.cpp', 'cuda/nearest_kernel.cu']),
         CUDAExtension('torch_cluster.knn_cuda',
                       ['cuda/knn.cpp', 'cuda/knn_kernel.cu']),
+        CUDAExtension('torch_cluster.knn_cyclic_cuda',
+                      ['cuda/knn_cyclic.cpp', 'cuda/knn_cyclic_kernel.cu']),        
         CUDAExtension('torch_cluster.radius_cuda',
                       ['cuda/radius.cpp', 'cuda/radius_kernel.cu']),
         CUDAExtension('torch_cluster.rw_cuda',
