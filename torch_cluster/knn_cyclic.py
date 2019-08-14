@@ -2,10 +2,10 @@ import torch
 import scipy.spatial
 
 if torch.cuda.is_available():
-    import torch_cluster.knn_cuda
+    import torch_cluster.knn_cyclic_cuda
 
 
-def knn(x, y, k, batch_x=None, batch_y=None, cosine=False):
+def knn_cyclic(x, y, k, batch_x=None, batch_y=None, cosine=False):
     r"""Finds for each element in :obj:`y` the :obj:`k` nearest points in
     :obj:`x`.
 
@@ -57,7 +57,7 @@ def knn(x, y, k, batch_x=None, batch_y=None, cosine=False):
     assert y.size(0) == batch_y.size(0)
 
     if x.is_cuda:
-        return torch_cluster.knn_cuda.knn(x, y, k, batch_x, batch_y, cosine)
+        return torch_cluster.knn_cyclic_cuda.knn(x, y, k, batch_x, batch_y, cosine)
 
     if cosine:
         raise NotImplementedError('Cosine distance not implemented for CPU')
@@ -85,7 +85,7 @@ def knn(x, y, k, batch_x=None, batch_y=None, cosine=False):
     return torch.stack([row, col], dim=0)
 
 
-def knn_graph(x, k, batch=None, loop=False, flow='source_to_target',
+def knn_cyclic_graph(x, k, batch=None, loop=False, flow='source_to_target',
               cosine=False):
     r"""Computes graph edges to the nearest :obj:`k` points.
 
@@ -120,7 +120,7 @@ def knn_graph(x, k, batch=None, loop=False, flow='source_to_target',
     """
 
     assert flow in ['source_to_target', 'target_to_source']
-    row, col = knn(x, x, k if loop else k + 1, batch, batch, cosine=cosine)
+    row, col = knn_cyclic(x, x, k if loop else k + 1, batch, batch, cosine=cosine)
     row, col = (col, row) if flow == 'source_to_target' else (row, col)
     if not loop:
         mask = row != col
