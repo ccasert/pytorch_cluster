@@ -25,7 +25,7 @@ template <typename scalar_t> struct Cosine {
 
 template <typename scalar_t>
 __global__ void
-knn_kernel(const scalar_t *__restrict__ x, const scalar_t *__restrict__ y,
+knn_cyclic_kernel(const scalar_t *__restrict__ x, const scalar_t *__restrict__ y,
            const int64_t *__restrict__ batch_x,
            const int64_t *__restrict__ batch_y, scalar_t *__restrict__ dist,
            int64_t *__restrict__ row, int64_t *__restrict__ col, size_t k,
@@ -80,7 +80,7 @@ knn_kernel(const scalar_t *__restrict__ x, const scalar_t *__restrict__ y,
   }
 }
 
-at::Tensor knn_cuda(at::Tensor x, at::Tensor y, size_t k, at::Tensor batch_x,
+at::Tensor knn_cyclic_cuda(at::Tensor x, at::Tensor y, size_t k, at::Tensor batch_x,
                     at::Tensor batch_y, bool cosine) {
   cudaSetDevice(x.get_device());
   auto batch_sizes = (int64_t *)malloc(sizeof(int64_t));
@@ -97,8 +97,8 @@ at::Tensor knn_cuda(at::Tensor x, at::Tensor y, size_t k, at::Tensor batch_x,
   auto row = at::empty(y.size(0) * k, batch_y.options());
   auto col = at::full(y.size(0) * k, -1, batch_y.options());
 
-  AT_DISPATCH_FLOATING_TYPES(x.scalar_type(), "knn_kernel", [&] {
-    knn_kernel<scalar_t><<<batch_size, THREADS>>>(
+  AT_DISPATCH_FLOATING_TYPES(x.scalar_type(), "knn_cyclic_kernel", [&] {
+    knn_cyclic_kernel<scalar_t><<<batch_size, THREADS>>>(
         x.data<scalar_t>(), y.data<scalar_t>(), batch_x.data<int64_t>(),
         batch_y.data<int64_t>(), dist.data<scalar_t>(), row.data<int64_t>(),
         col.data<int64_t>(), k, x.size(1), cosine);
