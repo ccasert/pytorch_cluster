@@ -3,7 +3,7 @@
 #define CHECK_CUDA(x) AT_ASSERTM(x.type().is_cuda(), #x " must be CUDA tensor")
 #define IS_CONTIGUOUS(x) AT_ASSERTM(x.is_contiguous(), #x " is not contiguous");
 
-at::Tensor knn_cuda_cyclic(at::Tensor x, at::Tensor y, size_t k, at::Tensor batch_x,
+at::Tensor knn_cyclic_cuda(at::Tensor x, at::Tensor y, size_t k, at::Tensor batch_x,
                     at::Tensor batch_y, bool cosine);
 
 at::Tensor knn_cyclic(at::Tensor x, at::Tensor y, size_t k, at::Tensor batch_x,
@@ -14,7 +14,7 @@ at::Tensor knn_cyclic(at::Tensor x, at::Tensor y, size_t k, at::Tensor batch_x,
   IS_CONTIGUOUS(y);
   CHECK_CUDA(batch_x);
   CHECK_CUDA(batch_y);
-  return knn_cuda_cyclic(x, y, k, batch_x, batch_y, cosine);
+  return knn_cyclic_cuda(x, y, k, batch_x, batch_y, cosine);
 }
 
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
