@@ -101,3 +101,4 @@ at::Tensor knn_cuda(at::Tensor x, at::Tensor y, size_t k, at::Tensor batch_x,
 
   auto mask = col != -1;
   return at::stack({row.masked_select(mask), col.masked_select(mask)}, 0);
+}
